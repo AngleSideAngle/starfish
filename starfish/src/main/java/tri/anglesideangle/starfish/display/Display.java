@@ -12,7 +12,7 @@ public class Display {
     private int width, height;
 
     public Display(String title, int width, int height) {
-        
+
         this.title = title;
         this.width = width;
         this.height = height;
@@ -36,5 +36,9 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 }

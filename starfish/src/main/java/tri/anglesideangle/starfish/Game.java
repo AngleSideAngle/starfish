@@ -1,6 +1,12 @@
 package tri.anglesideangle.starfish;
 
 import tri.anglesideangle.starfish.display.Display;
+import tri.anglesideangle.starfish.gfx.imageLoader;
+
+import java.awt.image.BufferStrategy;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class Game implements Runnable {
 
@@ -11,6 +17,11 @@ public class Game implements Runnable {
     private boolean running = false;
     private Thread thread;
 
+    private BufferStrategy bs;
+    private Graphics g;
+
+    private BufferedImage testImg;
+
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
@@ -19,6 +30,7 @@ public class Game implements Runnable {
 
     private void init() {
         display = new Display(title, width, height);
+        testImg = imageLoader.loadImage("/textures/test.png");
     }
 
     private void tick() {
@@ -26,7 +38,23 @@ public class Game implements Runnable {
     }
 
     private void render() {
+        bs = display.getCanvas().getBufferStrategy();
+        if(bs == null) {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+        g = bs.getDrawGraphics();
+        
+        // start drawing
+        g.clearRect(0, 0, width, height);
+        g.setColor(Color.CYAN);
+        g.fillRect(19, 50, 10, 10);
+        g.drawImage(testImg, 0, 0, null);
 
+
+        // end drawing
+        bs.show();
+        g.dispose();
     }
 
     public void run() {
